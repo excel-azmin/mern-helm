@@ -1,0 +1,30 @@
+services:
+  server:
+    image: excelazmin/mern-blog-server:latest
+    environment:
+      - DB_URL=mongodb://root:example@mongo:27017
+      - NODE_ENV=production
+    volumes:
+      - "server:/app"
+    ports:
+      - "5001:5001"
+  client:
+    image: excelazmin/mern-blog-client:latest
+    environment:
+      - REACT_APP_BASE_URL=http://server:5001
+    ports:
+      - "3000:80"
+  mongo:
+    image: mongo:latest
+    ports:
+      - "17018:27017"
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: example
+    volumes:
+      - mongo_data:/data/db
+volumes:
+  mongo_data:
+    driver: local
+  server:
+    driver: local
