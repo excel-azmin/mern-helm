@@ -22,10 +22,18 @@ spec:
               mountPath: /app
           env:
             - name: DB_URL
-              value: { { .Values.backend.dbUrl } }
-          envFrom:
-            - secretRef:
-                name: mongodb-secret
+              value: { { .Values.backend.dbUrl | quote } }
+            - name: MONGO_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: mongodb-secret
+                  key: username
+            - name: MONGO_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: mongodb-secret
+                  key: password
+
       volumes:
         - name: images-storage
           persistentVolumeClaim:

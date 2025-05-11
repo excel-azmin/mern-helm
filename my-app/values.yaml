@@ -5,12 +5,12 @@ global:
 backend:
   image: excelazmin/mern-blog-server:latest
   replicaCount: 2
-  dbUrl: mongodb://root:example@mongodb:27017
+  dbUrl: "mongodb://$(MONGO_USERNAME):$(MONGO_PASSWORD)@mongodb:27017/mydb?authSource=admin"
   servicePort: 5001
   imageStorageSize: 10Gi
 
 frontend:
-  image: your-registry/frontend:latest
+  image: excelazmin/mern-blog-client:latest
   replicaCount: 2
   servicePort: 80
   containerPort: 3000
