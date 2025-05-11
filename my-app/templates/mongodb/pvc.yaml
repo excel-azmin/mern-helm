@@ -3,9 +3,9 @@ kind: PersistentVolumeClaim
 metadata:
   name: mongodb-pvc
 spec:
-  storageClassName: { { .Values.global.storageClass } }
+  storageClassName: {{ .Values.global.storageClass }}
   accessModes:
     - ReadWriteOnce
   resources:
     requests:
-      storage: { { .Values.mongodb.storageSize } }
+      storage: {{ .Values.mongodb.storageSize }}

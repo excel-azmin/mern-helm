@@ -3,9 +3,9 @@ kind: PersistentVolumeClaim
 metadata:
   name: backend-images-pvc
 spec:
-  storageClassName: { { .Values.global.storageClass } }
+  storageClassName: {{ .Values.global.storageClass }}
   accessModes:
     - ReadWriteMany
   resources:
     requests:
-      storage: { { .Values.backend.imageStorageSize } }
+      storage: {{ .Values.backend.imageStorageSize }}

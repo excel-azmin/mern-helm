@@ -3,10 +3,10 @@ kind: Service
 metadata:
   name: frontend
 spec:
-  type: LoadBalancer # Or NodePort for bare metal
+  type: NodePort  # Or LoadBalancer for bare metal
   selector:
     app: frontend
   ports:
     - protocol: TCP
-      port: { { .Values.frontend.servicePort } }
-      targetPort: { { .Values.frontend.containerPort } }
+      port: {{ .Values.frontend.servicePort }}
+      targetPort: {{ .Values.frontend.containerPort }}
