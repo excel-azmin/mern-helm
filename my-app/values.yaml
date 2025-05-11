@@ -1,0 +1,24 @@
+global:
+  nfsServer: 192.168.10.178
+  storageClass: nfs-client
+
+backend:
+  image: excelazmin/mern-blog-server:latest
+  replicaCount: 2
+  dbUrl: mongodb://root:example@mongodb:27017
+  servicePort: 5001
+  imageStorageSize: 10Gi
+
+frontend:
+  image: your-registry/frontend:latest
+  replicaCount: 2
+  servicePort: 80
+  containerPort: 3000
+
+mongodb:
+  image: mongo:5.0
+  replicaCount: 1
+  servicePort: 27017
+  storageSize: 20Gi
+  rootUsername: root
+  rootPassword: example
