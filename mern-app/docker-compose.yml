@@ -3,7 +3,7 @@ services:
     image: excelazmin/mern-blog-server:latest
     environment:
       - DB_URL=mongodb://root:example@mongo:27017
-      - NODE_ENV=production
+      # - NODE_ENV=production
     volumes:
       - "server:/app"
     ports:

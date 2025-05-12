@@ -10,8 +10,10 @@ const dbUrl = process.env.DB_URL;
 mongoose
   .connect(dbUrl)
   .then(() => {
+    console.log("DB_URL:", dbUrl);
     console.log("Connected to MongoDB!");
   })
   .catch((err) => {
+    console.log("DB_URL:", dbUrl);
     console.log("Error connecting to MongoDB:", err);
   });
