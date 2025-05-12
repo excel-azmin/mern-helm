@@ -22,3 +22,8 @@ mongodb:
   storageSize: 20Gi
   rootUsername: root
   rootPassword: example
+
+ingress:
+  enabled: true
+  backendHost: blog-api.myapps.com
+  frontendHost: blog.myapps.com

@@ -72,8 +72,38 @@ kubectl get storageclass
 
 
 helm install my-app ./my-app
+helm upgrade my-app ./my-app/
 helm status my-app
 kubectl get all
 
 helm uninstall my-app
+
+
+kubectl apply -f https://raw.githubusercontent.com/metallb/metallb/v0.14.9/config/manifests/metallb-native.yaml
+
+kubectl get pods -n metallb-system
+kubectl get svc -n metallb-system
+
+kubectl edit svc -n metallb-system
+# Change the type from ClusterIP to NodePort (or LoadBalancer if using a cloud provider).
+
+
+
+
+helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx
+helm repo update
+helm install ingress-nginx ingress-nginx/ingress-nginx --namespace ingress-nginx --create-namespace
+
+
+kubectl get pods -n ingress-nginx
+
+kubectl get svc -n ingress-nginx
+
+kubectl edit svc ingress-nginx-controller -n ingress-nginx
+
+# Change the type from ClusterIP to NodePort (or LoadBalancer if using a cloud provider).
+
+kubectl get svc frontend -o wide
+kubectl describe ingress frontend-ingress
+
 

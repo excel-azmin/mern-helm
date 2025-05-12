@@ -1,0 +1,1 @@
+DB_URL=mongodb://root:example@192.168.110.216:17018/blog-app?authSource=admin
