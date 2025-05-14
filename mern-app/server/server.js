@@ -11,8 +11,8 @@ app.use(cors({origin: "*"}));
 app.set("view engine", "ejs");
 app.use(express.json());
 
-app.use("/api/users", userRouter);
-app.use("/api/blogs", blogRouter);
+app.use("/users", userRouter);
+app.use("/blogs", blogRouter);
 
 app.use("/api", (req, res, next) => {
   res.send("hello");

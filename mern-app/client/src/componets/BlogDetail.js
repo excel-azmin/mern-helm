@@ -21,7 +21,7 @@ const BlogDetail = () => {
   };
   const fetchDetails = async () => {
     const res = await axios
-      .get(`${config.BASE_URL}/api/blogs/${id}`)
+      .get(`${config.BASE_URL}/blogs/${id}`)
       .catch((err) => console.log(err));
     const data = await res.data;
     return data;
@@ -37,7 +37,7 @@ const BlogDetail = () => {
   }, [id]);
   const sendRequest = async () => {
     const res = await axios
-      .put(`${config.BASE_URL}/api/blogs/update/${id}`, {
+      .put(`${config.BASE_URL}/blogs/update/${id}`, {
         title: inputs.title,
         description: inputs.description,
       })
