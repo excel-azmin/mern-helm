@@ -19,31 +19,63 @@
 #             port:
 #               number: {{ .Values.frontend.servicePort }}
 
+
+# Step 1: Keep REACT_APP_BASE_URL as http://blog.myapps.com/api
+
+
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: frontend-ingress
-  namespace: default
 spec:
   ingressClassName: nginx
   rules:
-    - host: {{ .Values.ingress.frontendHost }}
-      http:
-        paths:
-          - path: /
-            pathType: Prefix
-            backend:
-              service:
-                name: frontend
-                port:
-                  number: {{ .Values.frontend.servicePort }}
+  - host: {{ .Values.ingress.frontendHost }}
+    http:
+      paths:
+      - path: /api
+        pathType: Prefix
+        backend:
+          service:
+            name: backend
+            port:
+              number: {{ .Values.backend.servicePort }}
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: frontend
+            port:
+              number: {{ .Values.frontend.servicePort }}
 
-          - path: /api/(.*)
-            pathType: ImplementationSpecific
-            backend:
-              service:
-                name: backend
-                port:
-                  number: {{ .Values.backend.servicePort }}
+# Set REACT_APP_BASE_URL to http://blog.myapps.com (remove /api): REACT_APP_BASE_URL=http://blog.myapps.com
+
+
+# apiVersion: networking.k8s.io/v1
+# kind: Ingress
+# metadata:
+#   name: frontend-ingress
+#   annotations:
+#     nginx.ingress.kubernetes.io/rewrite-target: /$1  # Strip "/api/" from the path
+# spec:
+#   ingressClassName: nginx
+#   rules:
+#   - host: {{ .Values.ingress.frontendHost }}
+#     http:
+#       paths:
+#       - path: /api/(.*)   # Use regex in the path
+#         pathType: ImplementationSpecific  # Required for regex support
+#         backend:
+#           service:
+#             name: backend
+#             port:
+#               number: {{ .Values.backend.servicePort }}
+#       - path: /
+#         pathType: Prefix
+#         backend:
+#           service:
+#             name: frontend
+#             port:
+#               number: {{ .Values.frontend.servicePort }}           
 
           

@@ -107,3 +107,123 @@ kubectl get svc frontend -o wide
 kubectl describe ingress frontend-ingress
 
 
+# argo cd
+
+helm repo add argo https://argoproj.github.io/argo-helm
+helm repo update
+
+kubectl create namespace argocd
+
+
+helm install argocd argo/argo-cd \
+  --namespace argocd \
+  --set server.ingress.enabled=true \
+  --set server.ingress.ingressClassName=nginx \
+  --set server.ingress.hosts='{argocd.example.com}' \
+  --set server.ingress.paths='{/}' \
+  --set server.ingress.annotations."nginx\.ingress\.kubernetes\.io/ssl-redirect"="false" \
+  --set server.extraArgs='{--insecure}'
+
+# if you want to upgrade anything 
+
+helm upgrade --install argocd argo/argo-cd \
+  --namespace argocd \
+  --set server.ingress.enabled=true \
+  --set server.ingress.ingressClassName=nginx \
+  --set server.ingress.hosts='{argocd.example.com}' \
+  --set server.ingress.paths='{/}' \
+  --set server.ingress.annotations."nginx\.ingress\.kubernetes\.io/ssl-redirect"="false" \
+  --set server.extraArgs='{--insecure}'
+
+
+kubectl get ingress -n argocd
+kubectl get pods -o wide -n argocd
+kubectl get svc -o wide -n argocd
+
+kubectl get secret argocd-initial-admin-secret -n argocd -o jsonpath="{.data.password}" | base64 -d
+
+
+
+# ArgoCD 
+
+
+https://github.com/devopsjourney1/argo-examples
+
+
+# Grafana
+
+helm repo add grafana https://grafana.github.io/helm-charts
+helm repo update
+
+kubectl get ingress -n grafana
+
+
+helm upgrade --install grafana grafana/grafana \
+  --namespace grafana \
+  --create-namespace \
+  --set service.type=LoadBalancer \
+  --set adminPassword='admin' \
+  --set ingress.enabled=true \
+  --set ingress.hosts[0]=grafana.example.com \
+  --set ingress.annotations."nginx\.ingress\.kubernetes\.io/ssl-redirect"='"false"' \
+  --set ingress.paths[0]='/' \
+  --set ingress.ingressClassName=nginx
+
+
+kubectl get pods -n grafana
+kubectl get ingress -n grafana
+kubectl get svc -n grafana
+
+kubectl get secret --namespace grafana grafana -o jsonpath="{.data.admin-password}" | base64 --decode ; echo
+
+
+
+helm install prometheus prometheus-community/kube-prometheus-stack --namespace monitoring
+
+
+# Install Prometheus
+helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
+helm repo update
+
+helm install prometheus prometheus-community/kube-prometheus-stack \
+  --namespace monitoring \
+  --create-namespace \
+  --set grafana.enabled=false 
+
+
+kubectl --namespace monitoring get pods -l "release=prometheus"
+kubectl --namespace monitoring get svc prometheus-kube-prometheus-prometheus
+
+
+# Connect Grafana to Prometheus
+kubectl apply -f - <<EOF
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: grafana-datasources
+  namespace: grafana
+data:
+  prometheus.yaml: |-
+    {
+        "apiVersion": 1,
+        "datasources": [{
+            "access": "proxy",
+            "editable": true,
+            "name": "Prometheus",
+            "orgId": 1,
+            "type": "prometheus",
+            "url": "http://prometheus-kube-prometheus-prometheus.monitoring:9090",
+            "version": 1
+        }]
+    }
+EOF
+
+
+kubectl get configmap grafana-datasources -n grafana -o yaml
+
+# set Prometheus data source URL : Set the URL to http://prometheus-kube-prometheus-prometheus.monitoring:9090.
+
+
+
+Grafana Dashboard List: 15661, 741, 747, 19105
+
