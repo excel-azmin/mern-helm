@@ -13,7 +13,7 @@ services:
     environment:
       - REACT_APP_BASE_URL=http://server:5001
     ports:
-      - "3000:80"
+      - "3003:80"
   mongo:
     image: mongo:latest
     ports:

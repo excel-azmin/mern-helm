@@ -1,4 +1,4 @@
 const config = {
-  BASE_URL: process.env.REACT_APP_BASE_URL || "http://localhost:3001",
+  BASE_URL: process.env.REACT_APP_BASE_URL || "api",
 };
 export default config;

@@ -14,6 +14,11 @@ function App() {
   return <React.Fragment>
     <header>
       <Header/>
+      <div className="container">
+        <h1>Welcome to the Blog App</h1>
+        <p>Explore and share your thoughts with the world!</p>
+      </div>
+      
     </header>
     <main>
     <Routes>
