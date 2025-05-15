@@ -78,6 +78,12 @@ kubectl get all
 
 helm uninstall my-app
 
+kubectl delete pods -l app=frontend
+helm upgrade my-app ./my-app/ --recreate-pods
+kubectl rollout restart deployment/frontend
+
+
+
 
 kubectl apply -f https://raw.githubusercontent.com/metallb/metallb/v0.14.9/config/manifests/metallb-native.yaml
 
